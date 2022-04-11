@@ -22,7 +22,8 @@ const SignUp = ()=>{
 
     useEffect(()=>{
         //scroll to top of page on load.  If logged it, do not display this page, instead redirect to dashboard
-        window.scroll(0,0)
+        window.scroll(0,0);
+        setLoading(false);    
         if(login){
             history.push(`/business/dashboard/${businessName}`);
         }
@@ -70,8 +71,10 @@ const SignUp = ()=>{
         .then(response => response.json())
         .then((data)=> {
             //if user has been added, set loading to false, and redirect to login page....
-            setLoading(false);
-            window.location.href = "/login"
+            //allows three seconds for user to see redirection message//
+            setTimeout(()=>{
+                window.location.href = "/login" 
+            }, 3000);
         })
         .catch((err)=>{
             setLoading(false);
@@ -82,7 +85,7 @@ const SignUp = ()=>{
     //function for gathering previous data from FormOwner.js AND combining it with business info from BusinessFinder.js...
     const submitBusinessData = (e, info)=>{
         e.preventDefault();
-        //send to function to add user to and business to database 
+        //and sending it to a function that will add user to database 
         addUser(nameFirst, nameLast, userPassword, userPhone, userEmail, info);
     };
 
@@ -95,19 +98,18 @@ const SignUp = ()=>{
     else{
         return(
             <>
-            <Navbar/>
-            <div className="row login-register-page">
-                <div className="col-12 offset-sm-1 col-sm-10 offset-md-2 col-md-8 offset-lg-3 col-lg-6">
-                    <div className="card card-body login-register-card">
-                        {/* if there is matching data and account exists direct to business finder else direct to new user form */}
-                        {newAccount === false ? <FormOwner submitData = {submitData}/> : <BusinessFinder handleBusinessData = {submitBusinessData} />}
-                        <p className="lead" style={{fontWeight:"500"}}>Have An Account? <a href="/login">Login</a></p>
+                <Navbar/>
+                <div className="row login-register-page">
+                    <div className="col-12 offset-sm-1 col-sm-10 offset-md-2 col-md-8 offset-lg-3 col-lg-6">
+                        <div className="card card-body login-register-card">
+                            {/* if there is matching data and account exists direct to business finder else direct to new user form */}
+                            {newAccount === false ? <FormOwner submitData = {submitData}/> : <BusinessFinder handleBusinessData = {submitBusinessData} />}
+                            <p className="lead" style={{fontWeight:"500"}}>Have An Account? <a href="/login">Login</a></p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <Footer/>
+                <Footer/>
             </>
-
         )    
     }
     

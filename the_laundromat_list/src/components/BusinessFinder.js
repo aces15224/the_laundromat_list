@@ -61,9 +61,10 @@ const BusinessFinder = ({handleBusinessData})=>{
             firstCall()    
         }          
     }
-    //Function passed down from signUp.js to BusinessResults component to collect account info and business info and set state
+    //Function passed down from signUp.js => Business Finder => BusinessResults to collect account info and business info and...
     const handleBusinessInfo = (e, info)=>{
         e.preventDefault();
+        // add it to the database
         handleBusinessData(e, info)
     }
         
@@ -99,7 +100,7 @@ const BusinessFinder = ({handleBusinessData})=>{
                 </button>
             </form>
             {/* display business results if input has been validate */}
-            {search === true && <BusinessResults matches={matches} handleSubmit={(e, message)=> handleBusinessInfo(e, message)} />} 
+            {search === true && <BusinessResults matches={matches} handleSubmit={handleBusinessInfo} />} 
        </>
     )
 }

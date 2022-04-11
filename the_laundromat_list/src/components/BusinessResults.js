@@ -13,7 +13,7 @@ const BusinessResults = ({matches, handleSubmit})=>{
 
     const matchLength = matches.length;
 
-    // send user info up to set state in parent page
+    //passed down and used to retrieve info from AddBusinss, then sent up up to set state in parent page
     const handleInfo = (e, info)=>{
         e.preventDefault();
         handleSubmit(e, info)
