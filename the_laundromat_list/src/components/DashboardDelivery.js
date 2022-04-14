@@ -141,52 +141,66 @@ const DashboardDelivery = ({delivery, name, update})=>{
     const updatePrices = (e, title, action)=>{
         e.preventDefault();
         if(action !== "remove"){
+            // if adding a value
+            //capture input values and create string to assign to object
             const label = document.getElementById("serviceItem").value;
             const price = document.getElementById("servicePrice").value;
             const dataString = `${label}-$${price}`;
+            //update indicates when to switch from updating deliveryPrices to updating other values in state...
             let updated = false;
             const priceObj = {};
             const stateObj = {};
+            // cycle through state and....
             for(let i in deliveryInfo){
-                // if(i !== "available"){
-                    if(i === "prices"){
-                        const priceList = deliveryInfo.prices;
-                        for(let j in priceList){
-                            if(priceList[j] !== dataString){
-                                if(priceList[j] === null && updated === false){
-                                    priceObj[j] = dataString;
-                                    updated = true;
-                                } else{
-                                    priceObj[j] = priceList[j]
-                                }
+                if(i === "prices"){
+                    //if prices create copy of object and cycle through it....
+                    const priceList = deliveryInfo.prices;
+                    for(let j in priceList){
+                        if(priceList[j] !== dataString){
+                            if(priceList[j] === null && updated === false){
+                                // if price slot is available, assign price to object
+                                priceObj[j] = dataString;
+                                //set update to prevent remaining non price values from being assigned to deliveryPrices
+                                updated = true;
+                            } else{
+                                //and assign non-price values to non-price slots
+                                priceObj[j] = priceList[j]
                             }
                         }
-                    } else{
-                        stateObj[i] = deliveryInfo[i]
                     }
-                // }
+                } else{
+                    //assign non-price or perlb values to state object
+                    stateObj[i] = deliveryInfo[i]
+                }
             }
+            // send data to database
             stateObj.prices = priceObj;
             postData(stateObj);
         } else{
+            //if removing a value
             const priceObj = {};
             const stateObj = {};
+            // cycle through state and...
             for(let i in deliveryInfo){
-                // if(i !== "available"){
-                    if(i === "prices"){
-                        const priceList = deliveryInfo.prices;
-                        for(let j in priceList){
-                            if(priceList[j] === title){
-                                priceObj[j] = null;
-                            } else{
-                                priceObj[j] = priceList[j]
-                            }    
-                        }
-                    } else{
-                        stateObj[i] = deliveryInfo[i]
+                if(i === "prices"){
+                    //if prices create copy of object and cycle through it....
+                    const priceList = deliveryInfo.prices;
+                    for(let j in priceList){
+                        // if price has property name (title)
+                        if(priceList[j] === title){
+                            // set to null
+                            priceObj[j] = null;
+                        } else{
+                            // otherwise keep value and add to priceObj
+                            priceObj[j] = priceList[j]
+                        }    
                     }
-                // }
+                } else{
+                    //assign non-price or perlb values to state object
+                    stateObj[i] = deliveryInfo[i]
+                }
             }
+            // send data to database
             stateObj.prices = priceObj;
             postData(stateObj);
         }
@@ -272,7 +286,7 @@ const DashboardDelivery = ({delivery, name, update})=>{
     const infoHandler = (category)=>{
         //create a copy of deliveryInfo
         const data = Object.assign({}, deliveryInfo);
-        //clicking to submit will make text un-editable until edit button is clicked again
+        //setting edit to false will make text un-editable until edit button is clicked
         if(category === "deliveryAddInfo"){
             setEdit(!edit)
         } else if(category === "deliveryAddInfo2"){
