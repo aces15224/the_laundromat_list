@@ -17,7 +17,6 @@ function FormOwner({submitData}){
     //Account exists check's for existing account and prevents submission if one is found
     const [accountExists, setAccountExists] = useState(true);
 
-
     function reset(){
         //reset state booleans and remove error messages and error styling
         setFirstCheck(true);

@@ -32,7 +32,7 @@ const storage = multer.diskStorage({
 //Multer Upload
 const upload = multer({
     storage: storage,
-    limits:{fileSize: 100000},
+    // limits:{fileSize: 100000},
     fileFilter: function(req, file, cb){
         checkFileType(file, cb);
     }
@@ -71,8 +71,8 @@ Router.get("/checkAuthentication", (req, res) => {
 
 //Multer Post Route
 //Uses business name to post file to public folder
-Router.post("/uploads/:name", upload.single('uploaded_file'), async (req, res)=>{
-    const {name} = req.params;
+Router.post("/uploads/:name/:prevFile", upload.single('uploaded_file'), async (req, res)=>{
+    const {name, prevFile} = req.params;
     //Take all non-letters out of name
     const establishmentName = name.split("%20").join(" ");
     //if no file, console log error
@@ -99,7 +99,9 @@ Router.post("/uploads/:name", upload.single('uploaded_file'), async (req, res)=>
                 }
             })
             .then(function(data){
-                res.json(data)
+                //delete previous profile pic
+                fs.unlinkSync(path.resolve(req.file.destination,'resized', prevFile));
+                res.json(data);
             }) 
             .catch(err => console.log(err));    
         })

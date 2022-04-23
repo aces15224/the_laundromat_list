@@ -15,7 +15,8 @@ function ResultCard(props){
         open,
         opening,
         closing,
-        wifi    
+        wifi,
+        categoryName
     } = props.props;
 
     //Image to display if no other image is listed
@@ -40,11 +41,12 @@ function ResultCard(props){
     useEffect(()=>{
         setCardStyle(props.cardStyle);
     }, [props])
-
+    console.log(categoryName.toLowerCase())
     // Details Button Functionality
     function btnHandler(){
         //when clicked, a new page is opened to the specified business page
-        window.open(`/business/laundromat/${businessName}`, "_blank") || window.location.open(`/business/laundromat/${businessName}`);
+        const _category = categoryName.toLowerCase() === "laundromat" ? "laundromat" : "dry-cleaning";
+        window.open(`/business/${_category}/${businessName}`, "_blank") || window.location.open(`/business/${_category}/${businessName}`);
     };
     
     //Returns an array of amenity labels that will be displayed in card

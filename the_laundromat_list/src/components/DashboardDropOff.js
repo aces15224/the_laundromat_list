@@ -1,4 +1,3 @@
-import { iconExists } from "@iconify/react";
 import React , {useState, useEffect} from "react";
 import Deleter from "./DashboardDeleter";
 
@@ -194,8 +193,21 @@ const DashboardDropOff = ({dropOff, name, update})=>{
                 body: JSON.stringify(dataObj)
             })
             .then(response => response.json())
-            .then(()=> {   
-                update();
+            .then(()=> {
+                const updateObj = {dropOff : true}
+                fetch(`/api/establishment/${name}/`, {
+                    method: "put",
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(updateObj)
+                })
+                .then(response => response.json())
+                .then(()=> {
+                    update();
+                })                    
+                // update();
             }).catch(err => console.log(err))
         }
     };

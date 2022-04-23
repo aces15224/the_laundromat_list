@@ -1,7 +1,8 @@
 import React from "react";
 import MockWebsite from "../images/landingPage2.png";
 
-const DashboardAddImage = ({name})=>{
+
+const DashboardAddImage = ({name, currentImg})=>{
     const message = document.getElementsByClassName("error")[0];
     const handleSubmit = async (e)=>{
         e.preventDefault();
@@ -15,16 +16,17 @@ const DashboardAddImage = ({name})=>{
             const extname = filetypes.test(fileType.toLowerCase());
             if(extname){
                 message.style.color = "green";
-                message.innerHTML = "Upload Successful"
+                message.innerHTML = "Uploading..."
                 // Post data to public uploads folder
-                // await fetch(`/api/uploads/${name}`, {
-                //     method: 'POST',
-                //     body: formData
-                // })
-                // .then(response => response.json())
-                // .then(data=> {
-                //     console.log("Uploaded")
-                // })
+                await fetch(`/api/uploads/${name}/${currentImg}`, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data=> {
+                    console.log(data)
+                    message.innerHTML = "Upload Successful";
+                })
             } else{ 
                 message.innerHTML = "Image Files Only"; 
             }

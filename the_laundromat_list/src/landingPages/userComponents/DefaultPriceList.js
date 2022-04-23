@@ -14,6 +14,8 @@ const DefaultPriceList = ({priceList, category, delivery})=>{
         const stateObject = {}; 
         // Cycle through props and assign all price related values to stateobj
         for(let i in priceList){
+            console.log(i)
+            console.log(priceList[i])
             if(priceList[i] !== null && i !== "createdAt" && i !== "id" && i !== "updatedAt" && i !== "EstablishmentBusinessName"){
                 stateObject[i] = priceList[i];
             }
@@ -25,7 +27,7 @@ const DefaultPriceList = ({priceList, category, delivery})=>{
         })
  
     },[priceList, category])
-
+    console.log(category)
     //Prices to pass as props
     const prices = info.prices;
 

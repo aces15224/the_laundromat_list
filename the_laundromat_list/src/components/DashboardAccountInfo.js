@@ -9,7 +9,6 @@ const AccountInfo = ({businessName, setLink})=>{
     const [selection, setSelection] = useState("account");
     const listItemText = {fontSize: ".9rem"}
 
- 
     useEffect(()=>{
         // fetch business info upon loading
         userFetch()

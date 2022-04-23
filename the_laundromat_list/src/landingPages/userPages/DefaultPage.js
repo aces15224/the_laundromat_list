@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import DefaultNavBar from "../userComponents/DefaultNavBar";
+import DefaultNavBar from "../userComponents/defaultNavBar";
 import DefaultFooter from '../userComponents/DefaultFooter';
 import DefaultJumboTron from '../userComponents/DefaultJumbotron';
 import DefaultServices from '../userComponents/DefaultServices';
@@ -30,7 +30,8 @@ class DefaultPage extends Component{
             image: "",
             cityState: "",
             amenities: [],
-            overview: ""
+            overview: "",
+            category: ""
         }  
         this.handlePrices = this.handlePrices.bind(this);
         this.directions = this.directions.bind(this);
@@ -38,7 +39,7 @@ class DefaultPage extends Component{
     }
 
     componentDidMount(){
-        const url = window.location.href.split("/laundromat/")[1];
+        const url = window.location.href.split(/\/laundromat\/|\/dry-cleaning\//)[1];
         let businessName;
         let businessHours;
         let businessPhone;
@@ -60,6 +61,7 @@ class DefaultPage extends Component{
             .then(data=>{
                 //parse string of hours
                 let hours = JSON.parse(data.businessHours);
+                console.log(data)
 
                 //assign data to variables for further use
                 category =  data.categoryName;
@@ -134,9 +136,26 @@ class DefaultPage extends Component{
                 //if businessHours are null, return default times, otherwise parse the return JSON string and return data
                 businessHours = data.businessHours === null ? defaultTimes[day] : JSON.parse(data.businessHours)[day];
 
-                //Self service is always available, so immediately push that to services array...
-                services.push("self-service");
-                
+                //check the business category and add corresponding service labels
+                if(category.toLowerCase() === "laundromat"){
+                    services.push("self-service");
+                    if(data.dryCleaning === true){
+                        services.push("dry-cleaning");
+                    } else{
+                        data.DryCleaningPrice = null;
+                    }
+                } else if(category.toLowerCase() === "laundromat and dry cleaning"){
+                    services.push("dry-cleaning");
+                    services.push("self-service");
+                } else{
+                    services.push("dry-cleaning");
+                    if(data.laundry === true){
+                        services.push("dry-cleaning");
+                    } else{
+                        data.LaundryPrice = null;
+                    }
+                }
+
                 //then check to see if the following services are available and push if they are...
                 if(data.dropOff === true){
                     services.push("drop-off");
@@ -152,11 +171,6 @@ class DefaultPage extends Component{
                     data.DeliveryPrice = null;
                 }
 
-                if(data.dryCleaning === true){
-                    services.push("dry-cleaning");
-                } else{
-                    data.DryCleaningPrice = null;
-                }
                 //if there is no overview, add a default overview...
                 if(data.overview === null){
                     tempOverview = `${businessName} is a ${category} in ${cityState.trim()}.  Call or come past today and disover all we have to offer!  Have questions or comments?  
@@ -213,6 +227,7 @@ class DefaultPage extends Component{
                                 dropOff={this.state.dropOffPrices}
                                 dryCleaning={this.state.dryCleaningPrices}
                                 deliver={this.state.delivery}
+                                category={this.state.category}
                             />
                         }
                         <DefaultContact 

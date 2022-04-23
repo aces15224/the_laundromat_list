@@ -46,6 +46,7 @@ const App = ()=>{
             <Route path="/about" component={AboutPage}/>
             <Route path="/business/dashboard/:business" component={DashBoard} />
             <Route path="/business/laundromat/:businessName" component={DefaultPage} />
+            <Route path="/business/dry-cleaning/:businessName" component={DefaultPage} />
             <Route path="/business" component={BusinessPage} />
             <Route path="/contact" component={Contact} />
             <Route path="/login">

@@ -16,6 +16,18 @@ const DryCleaningPrices = ({prices, deliver})=>{
         sameDayInfo: null
     })
 
+    let categoryCount = 0;
+    let outerTF = false;
+    let pantTF = false;
+    let dressTF = false;
+    let shirtTF = false;
+    let miscTF = false;
+    let outerLength = false;
+    let pantLength =  false;
+    let shirtLength =  false;
+    let dressLength =  false;
+    let miscLength =  false; 
+
     useEffect(()=>{
         const priceList = prices; 
         let addInfo;
@@ -23,12 +35,17 @@ const DryCleaningPrices = ({prices, deliver})=>{
         let addInfo3;
         let sameDayInfo;
         let sameDayService;
+
+        // delivery is t/f value to indicate if delivery is offered
         let delivery = deliver;
+        
+        //Price Objects named by Category
         const outerwear= {};
         const pants = {};
         const shirts = {};
         const dress = {};
         const misc = {}
+
         for(let i in priceList){
             let currentPrice = priceList[i];
             if(currentPrice !== null){
@@ -45,21 +62,16 @@ const DryCleaningPrices = ({prices, deliver})=>{
                     //Assign key/values to objects based on corresponding labels
                     if(label === "Outerwear"){
                         outerwear[propName] = propVal;
-                    }
-                    else if(label === "Shirts"){
+                    } else if(label === "Shirts"){
                         shirts[propName] = propVal;
-                    }
-                    else if(label === "Pants"){
+                    } else if(label === "Pants"){
                         pants[propName] = propVal;
-                    }
-                    else if(label === "Dress Clothes"){
+                    } else if(label === "Dress Clothes"){
                         dress[propName] = propVal;
-                    }
-                    else{
+                    } else{
                         misc[propName] = propVal;
                     }
-                }
-                else{
+                } else{
                     // eslint-disable-next-line default-case
                     switch(i){
                         //assign remaining values to corresponding variables
@@ -95,19 +107,7 @@ const DryCleaningPrices = ({prices, deliver})=>{
             sameDayService,
             sameDayInfo
         })
-    },[prices])
-
-    let categoryCount = 0;
-    let outerTF = false;
-    let pantTF = false;
-    let dressTF = false;
-    let shirtTF = false;
-    let miscTF = false;
-    let outerLength = false;
-    let pantLength =  false;
-    let shirtLength =  false;
-    let dressLength =  false;
-    let miscLength =  false;                       
+    },[prices])                    
     
     //Cycle through info check for prices.  Set category to true if prices are available.
     for(let i in info){

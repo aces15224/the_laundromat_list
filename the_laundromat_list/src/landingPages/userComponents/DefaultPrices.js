@@ -6,11 +6,17 @@ const DefaultPrices = (props)=>{
 
     //Deliver indicates whether delivery is offered
     const [deliver, setDeliver] = useState(false);
+    const [categoryArray, setCategoryArray] = useState(["laundry", "dropOff", "delivery", "dryCleaning"])
 
     useEffect(()=>{
+        console.log(props)
         //Count tallies the number of Price Lists available
         let count = 0;
 
+        //check business category and use variable to set initial price category/list
+        let category = props.category.toLowerCase().includes("laundromat") ? "laundry" : "dry cleaning";
+        // let category = "dry cleaning"
+        
         //btnBool is t/f that indicates if buttons are displayed
         let btnBool = false;
 
@@ -19,7 +25,7 @@ const DefaultPrices = (props)=>{
 
         // Cycle over props and... 
         for(let i in props){
-            if(i !== "deliver"){
+            if(i !== "deliver" && i !== "category"){
                 if(props[i] !== null ){
                     //for each price available, increment count, and push label to array 
                     _categories.push(i)
@@ -27,6 +33,19 @@ const DefaultPrices = (props)=>{
                 }    
             }      
         }
+        //If business category is dry cleaning, sort array so dry cleaning is first index in array...
+        //!! This is so business category is always the first button & pricelist displayed !!
+        if(category === "dry cleaning" && _categories.includes("laundry")){
+            //find index of "dry cleaning" in array
+            let index = _categories.indexOf("dryCleaning")
+            //use index to remove drycleaning and re-add to beginning of array
+            _categories.splice(index, 1);
+            _categories.unshift("dryCleaning");
+        }
+
+        //setState w/ new category array
+        setCategoryArray(_categories);
+
         //If there is only one price list available, do not display buttons, and instead display prices and label
         if(count >= 2){
             btnBool = true;    
@@ -47,8 +66,8 @@ const DefaultPrices = (props)=>{
     const btnGenerator = ()=>{
         const tempProps = props;
         //For each price list, return a button w/ an onClick handler
-        const _buttons = Object.keys(tempProps).map((key, index)=>{
-            if(key !== "deliver"){
+        const _buttons = categoryArray.map((key, index)=>{
+            if(key !== "deliver" && key !== "category"){
                 //Label based on "Service"
                 let label = key === "delivery" ? "Delivery Service" : key === "dropOff" ? "Drop Off Service" : key === "dryCleaning" ? "Dry Cleaning" : "Self-Service Laundry";
                 //if not null, return button  

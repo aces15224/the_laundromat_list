@@ -14,7 +14,7 @@ function Footer(props){
 
     //Change the class and column sizes based on the URL
     const changeClass = windowTest ? "col-4 linkDiv" : "offset-3 col-6 offset-sm-4 col-sm-4 offset-md-0 col-md-3 col-lg-3 linkDiv";
-
+    console.log(props.loading)
     //If page is loading, the footer will be fixed to bottom...
     const footerStyle = {}
     if(props.loading === true){
