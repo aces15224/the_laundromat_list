@@ -4,7 +4,6 @@ import { Icon } from '@iconify/react';
 const AddBusiness =({handleClick})=>{
     const [name, setName] = useState("");
     const [phone, setPhone] = useState("");
-    // const [address, setAddress] = useState("");
     const [zip, setZip] = useState("");
     const [categoryName, setCategoryName] = useState("");
     const [inputState, setInputState] = useState("");
@@ -189,17 +188,37 @@ const AddBusiness =({handleClick})=>{
 
         // send to validate() to check for errors
         let validation = validate(_phone, newPhone, inputZip, fullAddress);
-
+        
         //if validate() returns true, create object, and send it to the locationFinder()
         if(validation === true){
             const info = {};
             info.categoryName = categoryName;
+            info.laundry = serviceSetter("laundry")
+            info.dryCleaning = serviceSetter("dry-clean")
             info.name = name.trim();
             info.phone = newPhone;
             info.title = title.trim();
             info.address = fullAddress;
             locationFinder(e, address_trim, city_trim, inputState, inputZip, info);      
         }
+    }
+
+    //Set t/f values (Laundry/Dry Cleaning) based on CategoryName
+    const serviceSetter = (service)=>{
+        if(service === "laundry"){
+            if(categoryName.includes("Laundromat")){
+                return true;
+            } else{
+                return false;
+            }
+        } else{
+            if(categoryName.includes("Dry Cleaning")){
+                return true;
+            } else{
+                return false;
+            }
+        }
+
     }
     
     async function addEstablishment(e, inputCity, inputZip, info){
