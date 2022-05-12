@@ -280,7 +280,6 @@ const AddBusiness =({handleClick})=>{
                     <div className="error"></div>
                 </div>
             </div>
-            
             <div className="form-row">
                 <div className="form-group dash-form-group col-md-6">
                     <label for="businessPhone">Business Phone Number</label>

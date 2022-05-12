@@ -15,7 +15,7 @@ class Home extends React.Component{
         this.state={
             show: false,
             zip: "",
-            category: ""
+            category: "laundromat"
         }
         this.handleSubmit=this.handleSubmit.bind(this);
         this.handleChange=this.handleChange.bind(this);
@@ -53,6 +53,7 @@ class Home extends React.Component{
         event.preventDefault();
         let category = this.state.category;
         let zipCode = this.state.zip;
+                
         // if zipcode is a number and is 5 digits long redirect user to search page
         if(!isNaN(parseInt(zipCode)) && zipCode.length === 5){
             window.location = `/${category}/${zipCode}`
@@ -61,6 +62,7 @@ class Home extends React.Component{
             this.errorHandler()
         }       
     }
+
     render(){
         return(
             <div>

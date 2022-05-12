@@ -298,6 +298,32 @@ Router.post("/users", (req, res) =>{
     }    
 });
 
+//Route to check if business page is verified and can be displayed
+Router.put("/verify", (req, res)=>{
+    const {claimCode, EstablishmentBusinessName} = req.body;
+    // update object props determined value of claimCode
+    let update;
+
+    // if claimCode is not undefined, set the claim code
+    if(claimCode === null || claimCode){
+        update = {claimCode : claimCode}
+    } else{
+        // if undefined, claimCode has been input correctly by user
+        //and business is claimed and verified, so update to reflect
+        update = {verified : true, claimed : true}
+    }
+    db.Establishment.update(update,{
+        where:{
+            businessName : EstablishmentBusinessName
+        }
+    })
+    .then(function(data){
+        console.log(data)
+        res.json(data)
+    }) 
+    .catch(err => console.log(err));  
+})
+
 //Route for getting or updating info on an individual business
 Router.route("/:name")
 .get(async (req,res)=>{
