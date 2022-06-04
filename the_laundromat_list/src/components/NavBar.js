@@ -42,7 +42,6 @@ const Navbar =()=>{
         fontStyle: "italic",
         textShadow: "1px 1px rgba(0,0,0,.125)"
     }
-    const manageLink = {color:"yellow", marginRight: "15px", padding:0, textShadow: "1px 1px #7f7d7d", fontWeight: "bold"} ;
     
     //Logs out the user
     const logout = async (e)=>{
@@ -63,27 +62,27 @@ const Navbar =()=>{
                     {   
                         !login ?
                             <Link
-                                style={manageLink}
+                                className="manageLink"
                                 to = "/business"
                             >
                                 Manage your free business listing
                             </Link>:
                             <Link
-                                style={manageLink}
+                                className="manageLink"
                                 to = {`/business/dashboard/${businessName}`}
                             >
                                 Go to your Business Profile
                             </Link>
                     }
                 </li>
-                <li style={{fontSize:"12px", fontWeight:"bold"}}>
+                <li className="log-btns">
                     {/* if user is logged in, display a log out button, otherwise display a log in button */}
                     { 
                         !login ?
-                            <Link
-                            style={{color:"white", marginRight: "6px", padding:0, textShadow: "1px 1px grey"}}
+                        <Link
+                            style={{textShadow: "1px 1px grey"}}
                             to = "/login"
-                            className={window.location.pathname === "/login" ? "nav-link active" : "nav-link"}
+                            className={window.location.pathname === "/login" ? "nav-link active log-btn-link" : "nav-link log-btn-link"}
                         >
                             Log In
                         </Link>:
@@ -99,14 +98,13 @@ const Navbar =()=>{
                 </li>
                 {/* if user is not logged in, display a button for signing up */}
                 {   !login &&
-                    <li style={{fontSize:"12px", fontWeight:"bold"}}>
+                    <li className="log-btns">
                         <Link
-                            style={{color:"white", marginRight: "6px", padding:0}}
+                            // style={{
                             to = "/sign-up"
-                            className={window.location.pathname === "/sign-up" ? "nav-link active" : "nav-link"}
+                            className={window.location.pathname === "/sign-up" ? "nav-link active log-btn-link" : "nav-link log-btn-link"}
                         >
-                            <button type="button" className="btn btn-outline-light" style={{fontSize: "12px", margin: "5px 0px 5px 5px", fontWeight: "bold"}}>Sign Up</button>
-
+                            <button type="button" className="btn btn-outline-light nav-signup-btn log-btns">Sign Up</button>
                         </Link>
                      </li>
                 }

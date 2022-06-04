@@ -34,6 +34,7 @@ const BusinessInfo = ({name, phone, address, category, hours, website, street, z
     const listItemText = {fontSize: ".9rem"};
 
     useEffect(()=>{
+        window.scroll(0,0);
         //set state according to state listed in props
         address.includes("MO") ? setBusinessState("MO") : setBusinessState("KS");
         //reset state values upon rendering
@@ -503,7 +504,7 @@ const BusinessInfo = ({name, phone, address, category, hours, website, street, z
                                 <div className="input-group-prepend">
                                     <span className="input-group-text">Day</span>
                                 </div>
-                                <select id="day" className="form-control kk" style={{textAlign: "center"}}> 
+                                <select id="day" className="form-control dash_business_form"> 
                                     <option value="Mo">Mon</option>
                                     <option value="Tu">Tue</option>
                                     <option value="We">Wed</option>
@@ -515,17 +516,17 @@ const BusinessInfo = ({name, phone, address, category, hours, website, street, z
                                 <div className="input-group-prepend">
                                     <span className="input-group-text">Open</span>
                                 </div>
-                                <select id="open" className="form-control" style={{textAlign: "center"}}>
+                                <select id="open" className="form-control dash_business_form">
                                     {openingOptions}
                                 </select>
                                 <div className="input-group-prepend">
                                     <span className="input-group-text">Close</span>
                                 </div>   
-                                <select id="close" className="form-control" style={{textAlign: "center"}}>
+                                <select id="close" className="form-control dash_business_form">
                                     {closingOptions}
                                 </select>                     
                                 <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button" onClick={(e)=> updateHours(e)}>Add</button>
+                                    <button class="btn btn-primary dash_btn" type="button" onClick={(e)=> updateHours(e)}>Add</button>
                                 </div>
                             </div>  
                             <ul className="list-group option-ul">

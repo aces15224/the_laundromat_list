@@ -3,7 +3,7 @@ import DeliveryHoursInfo from "../components/DeliveryInfoHours";
 import Deleter from "./DashboardDeleter";
 
 
-const DashboardDelivery = ({delivery, name, update})=>{
+const DashboardDelivery = ({delivery, name, update, verify, claimed})=>{
     const liStyle = { width: "100%" };
     const [tableExists, setTableExists] = useState(false)
     const [edit, setEdit] = useState(false);
@@ -15,8 +15,8 @@ const DashboardDelivery = ({delivery, name, update})=>{
     const week = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     const [size, setSize] = useState();
     //Change inputs based on size of window//
-    const inputAnswer = (window.innerWidth >= 991 && window.innerWidth <= 1190) ? "Select Yes/No" : "Select Answer";
-    const inputMinimum = (window.innerWidth >= 991 && window.innerWidth <= 1190) ? "Minimum" : "Insert Minimum";
+    const inputAnswer = (window.innerWidth >= 991 && window.innerWidth <= 1190) || window.innerWidth <= 412 ? "Yes/No" : "Select Answer";
+    const inputMinimum = (window.innerWidth >= 991 && window.innerWidth <= 1190) || window.innerWidth <= 412 ? "Minimum" : "Insert Minimum";
     //
     const [freePickUp, setFreePickUp] = useState(false);
     const [pickUpFee, setPickUpFee] = useState(null);
@@ -303,6 +303,9 @@ const DashboardDelivery = ({delivery, name, update})=>{
     
     //send data to database
     const postData = (obj)=>{
+        // if business isn't verified don't allow the user to edit
+        if(!verify || !claimed) return false;
+
         const dataObj = {};
         //sort data between prices, hours, and [all else]
         for(let i in obj){
@@ -561,7 +564,6 @@ const DashboardDelivery = ({delivery, name, update})=>{
     const windowSize = ()=>{
         setSize(window.innerWidth)
     }  
-
     return(
         <>
             <div className="row price-div">
@@ -623,7 +625,7 @@ const DashboardDelivery = ({delivery, name, update})=>{
                                     onChange={(e)=>priceConversion(e)}
                                 />
                                 <div className="input-group-append">
-                                    <button className="btn btn-primary form-control" type="button" onClick={(e)=> updatePrices(e)}>Add</button>
+                                    <button className="btn btn-primary form-control dash_btn" type="button" onClick={(e)=> updatePrices(e)}>Add</button>
                                 </div>
                             </div>
                             <ul className="list-group">
@@ -686,9 +688,9 @@ const DashboardDelivery = ({delivery, name, update})=>{
                                     <div className="deliveryFeeInput">
                                         <h5 className="d-lg-none" style={{margin: "1rem"}}>Add Fees or Discounts</h5>
                                         <div class="form-group row">
-                                            <label for="freePickUp" class="col-6 offset-sm-1 col-sm-5 offset-md-1 col-md-5 offset-lg-0 col-lg-7 col-form-label freePickUp">Do you offer Free Pick Up?</label>
-                                            <div class="col-5 col-sm-5">
-                                                <select className="form-control freePickUp" name="freePickUp" onChange={(e)=>setFreePickUp(e.target.value)}>
+                                            <label for="freePickUp" class="col-7 offset-sm-1 col-sm-5 offset-md-1 col-md-5 offset-lg-0 col-lg-7 col-form-label freePickUp">Do you offer Free Pick Up?</label>
+                                            <div class="col-4 col-sm-4 col-md-5">
+                                                <select className="form-control summary_delivery freePickUp" name="freePickUp" onChange={(e)=>setFreePickUp(e.target.value)}>
                                                     <option selected disabled>{inputAnswer}</option>
                                                     <option value={true}>Yes</option>
                                                     <option value={false}>No</option>
@@ -696,28 +698,28 @@ const DashboardDelivery = ({delivery, name, update})=>{
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="inputEmail3" class="col-6 offset-sm-1 col-sm-5 offset-md-1 col-md-5 offset-lg-0 col-lg-7 col-form-label">Delivery Fee</label>
-                                            <div class="col-5 col-sm-5">
+                                            <label for="inputEmail3" class="col-7 offset-sm-1 col-sm-5 offset-md-1 col-md-5 offset-lg-0 col-lg-7 col-form-label">Delivery Fee</label>
+                                            <div class="col-4 col-sm-4 col-md-5">
                                                 <input   
                                                     type="number"
                                                     name="pickUpFee"
                                                     min="0.00" max="100.00" 
                                                     step="0.01" 
-                                                    className="form-control" 
+                                                    className="form-control summary_delivery" 
                                                     placeholder="Insert Price"
                                                     onChange={(e)=> feeHandler(e)}
                                                 />    
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="pickUpMinimum" class="col-6 offset-sm-1 col-sm-5 offset-md-1 col-md-5 offset-lg-0 col-lg-7 col-form-label">Pick Up Minimum (lbs)</label>
-                                            <div class="col-5 col-sm-5">
+                                            <label for="pickUpMinimum" class="col-7 offset-sm-1 col-sm-5 offset-md-1 col-md-5 offset-lg-0 col-lg-7 col-form-label">Pick Up Minimum (lbs)</label>
+                                            <div class="col-4 col-sm-4 col-md-5">
                                                 <input   
                                                     type="number" 
                                                     name="pickUpMinimum"
                                                     min="0" max="100" 
                                                     step="1" 
-                                                    className="form-control" 
+                                                    className="form-control summary_delivery" 
                                                     placeholder={inputMinimum}
                                                     onChange={(e)=> feeHandler(e)}
 
@@ -725,28 +727,28 @@ const DashboardDelivery = ({delivery, name, update})=>{
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="inputEmail3" class="col-6 offset-sm-1 col-sm-5 offset-md-1 col-md-5 offset-lg-0 col-lg-7 col-form-label">Laundry Price Per Lb</label>
-                                            <div class="col-5 col-sm-5">
+                                            <label for="inputEmail3" class="col-7 offset-sm-1 col-sm-5 offset-md-1 col-md-5 offset-lg-0 col-lg-7 col-form-label">Laundry Price Per Lb</label>
+                                            <div class="col-4 col-sm-4 col-md-5">
                                                 <input  
                                                     type="number" 
                                                     name="deliveryPricePerLbs" 
                                                     min="0.00" max="100.00" 
                                                     step="0.01" 
-                                                    className="form-control" 
+                                                    className="form-control summary_delivery" 
                                                     placeholder="Insert Price"
                                                     onChange={(e)=> feeHandler(e)}
                                                 />    
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="inputEmail3" class="col-6 offset-sm-1 col-sm-5 offset-md-1 col-md-5 offset-lg-0 col-lg-7 col-form-label">Discounted Price Per Lb</label>
-                                            <div class="col-5 col-sm-5">
+                                            <label for="inputEmail3" class="col-7 offset-sm-1 col-sm-5 offset-md-1 col-md-5 offset-lg-0 col-lg-7 col-form-label">Discounted Price Per Lb</label>
+                                            <div class="col-4 col-sm-4 col-md-5">
                                                 <input   
                                                     type="number" 
                                                     name="deliveryPricePerLbsDiscounted"
                                                     min="0.00" max="100.00" 
                                                     step="0.01" 
-                                                    className="form-control" 
+                                                    className="form-control summary_delivery" 
                                                     placeholder="Insert Price"
                                                     onChange={(e)=> feeHandler(e)}
                                                 />    

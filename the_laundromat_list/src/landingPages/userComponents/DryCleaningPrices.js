@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import PriceCard from "../userComponents/PriceCard";
 
 const DryCleaningPrices = ({prices, deliver})=>{
     console.log(deliver)
@@ -314,7 +315,7 @@ const DryCleaningPrices = ({prices, deliver})=>{
             {info.delivery &&
                 <div className="row price-div">
                     <div className="col-12 text-center">
-                        <h5>We deliver!  Check out our delivery page for more infomation!</h5>
+                        <h6>We deliver!  Check out our delivery page for more infomation!</h6>
                     </div>                        
                 </div>
             }

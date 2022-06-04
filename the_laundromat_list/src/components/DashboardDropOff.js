@@ -1,7 +1,7 @@
 import React , {useState, useEffect} from "react";
 import Deleter from "./DashboardDeleter";
 
-const DashboardDropOff = ({dropOff, name, update})=>{
+const DashboardDropOff = ({dropOff, name, update, verify, claimed})=>{
     const [tableExists, setTableExists] = useState(false)
     const [edit, setEdit] = useState(false);
     const [edit2, setEdit2] = useState(false);
@@ -152,6 +152,9 @@ const DashboardDropOff = ({dropOff, name, update})=>{
 
     //send data to database
     const postData = (obj)=>{
+        // if business isn't verified don't allow the user to edit
+        if(!verify || !claimed) return false;
+        
         const dataObj = {};
         //sort data between prices and everything else and...
         // add to dataObj
@@ -455,7 +458,7 @@ const DashboardDropOff = ({dropOff, name, update})=>{
                                 </div>
                                 <input id="perLb" type="number" min="0.00" max="100.00" step="0.01" className="form-control" placeholder="Insert Price" onChange={(e)=>priceConversion(e)}/>
                                 <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button" onClick={()=>validateInput("perLb")}>Add</button>
+                                    <button class="btn btn-primary dash_btn" type="button" onClick={()=>validateInput("perLb")}>Add</button>
                                 </div>
                             </div>
                             <ul className="list-group">
@@ -482,7 +485,7 @@ const DashboardDropOff = ({dropOff, name, update})=>{
                                 </div>
                                 <input id="servicePrice" type="number" min="0.00" max="100.00" step="0.01" className="form-control" placeholder="Insert Price" onChange={(e)=>priceConversion(e)}/>
                                 <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button" onClick={()=>validateInput("price")}>Add</button>
+                                    <button class="btn btn-primary dash_btn" type="button" onClick={()=>validateInput("price")}>Add</button>
                                 </div>
                             </div>
                             <ul className="list-group">

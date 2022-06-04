@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from "react";
+import PriceCard from "../userComponents/PriceCard";
+
 const DeliveryPrices = ({prices})=>{
     console.log(prices)
     const [info, setInfo] = useState({
@@ -80,14 +82,17 @@ const DeliveryPrices = ({prices})=>{
     //create array of keys and map over delivery prices...
     const priceList = Object.keys(info.deliveryPrices).map((price, index)=>{
         //return a card w/ label and price
+        let _price = `${info.deliveryPrices[price]} ${price.includes("Pickup") ? "/lb" : "/ea"}`;
         return(
-            <div className="card individual-price-card">
-                <div className="card-body" style={{display:"flex", justifyContent:"space-between", alignItems:"center", padding:10}}>
-                    <p className="cardText">{price}</p>
-                    {/* determine if cost is per lb or per item and append to price */}
-                    <p className="cardText">{`${info.deliveryPrices[price]} ${price.includes("Pickup") ? "/lb" : "/ea"}`}</p >
-                </div>
-            </div>
+            <PriceCard item={price} price={_price}/>
+
+            // <div className="card individual-price-card">
+            //     <div className="card-body" style={{display:"flex", justifyContent:"space-between", alignItems:"center", padding:10}}>
+            //         <p className="cardText">{price}</p>
+            //         {/* determine if cost is per lb or per item and append to price */}
+            //         <p className="cardText">{`${info.deliveryPrices[price]} ${price.includes("Pickup") ? "/lb" : "/ea"}`}</p >
+            //     </div>
+            // </div>
         )
     })
     
@@ -106,7 +111,7 @@ const DeliveryPrices = ({prices})=>{
             <div className="row">
                 <div className="col-12 text-center">
                     {/* if no free pick up, display price.  Otherwise, display "free pick up" */}
-                    <h6>{info.freePickUp === false ? `Pick up charge: ${info.pickUpFee}`: "Free Pick Up & Delivery"}</h6>
+                    <h6>{info.freePickUp ? "Free Pick Up & Delivery" : (info.freePickUp && info.pickUpFee !== null) ? `Pick up charge: ${info.pickUpFee}`: "Please call about a pick up charge" }</h6>
                 </div>                        
             </div>
             <div className="row  price-div">
@@ -120,7 +125,8 @@ const DeliveryPrices = ({prices})=>{
                     <p className="_asterisks" style={{marginBottom: 5}}><span style={{color: "red"}}>**</span>Deliveries are made {info.deliveryHours}</p>
                 </div>                        
             </div>
-            {info.minimum !== null && 
+            
+            {info.minimum !== undefined && 
                 <div className="row">
                     <div className="offset-1 col-10 text-center">
                         <p className="_asterisks" style={{marginBottom: 5}}><span style={{color: "red"}}>**</span>Minimum of {info.minimum} per delivery</p>

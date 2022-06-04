@@ -1,8 +1,11 @@
-import React from "react";
+import React, {useEffect} from "react";
 import MockWebsite from "../images/landingPage2.png";
 
 
 const DashboardAddImage = ({name, currentImg})=>{
+    useEffect(()=>{
+        window.scroll(0,0)
+    },[])
     const message = document.getElementsByClassName("error")[0];
     const handleSubmit = async (e)=>{
         e.preventDefault();

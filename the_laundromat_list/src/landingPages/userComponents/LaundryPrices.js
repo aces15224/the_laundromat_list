@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import PriceCard from "../userComponents/PriceCard";
 
 const LaundryPrices = ({prices})=>{
     const [priceList, setPriceList] = useState({
@@ -89,12 +90,14 @@ const LaundryPrices = ({prices})=>{
     const wash = Object.keys(washPrices).map((price, index)=>{
         // return a card w/ label (washer size) and price per wash
         return(
-            <div className="card individual-price-card">
-                <div className="card-body" style={{display:"flex", justifyContent:"space-between", alignItems:"center", padding:10}}>
-                    <p className="cardText">{`${price} Washers`}</p>
-                    <p className="cardText">{`${washPrices[price]}/wash`}</p >
-                </div>
-            </div>
+            <PriceCard item={`${price} Washers`} price={`${washPrices[price]}/wash`}/>
+
+            // <div className="card individual-price-card">
+            //     <div className="card-body" style={{display:"flex", justifyContent:"space-between", alignItems:"center", padding:10}}>
+            //         <p className="cardText">{`${price} Washers`}</p>
+            //         <p className="cardText">{`${washPrices[price]}/wash`}</p >
+            //     </div>
+            // </div>
         )
     })
 
@@ -102,12 +105,13 @@ const LaundryPrices = ({prices})=>{
     const dry = Object.keys(dryPrices).map((price, index)=>{
         // return a card w/ label (dryer size) and price per 5 minutes
         return(
-            <div className="card individual-price-card">
-                <div className="card-body" style={{display:"flex", justifyContent:"space-between", alignItems:"center", padding:10}}>
-                    <p className="cardText">{`${price} Dryers`}</p>
-                    <p className="cardText">{`${dryPrices[price]}/5 Minutes`}</p >
-                </div>
-            </div>
+            <PriceCard item={`${price} Dryers`} price={`${dryPrices[price]}/5 Minutes`}/>
+            // <div className="card individual-price-card">
+            //     <div className="card-body" style={{display:"flex", justifyContent:"space-between", alignItems:"center", padding:10}}>
+            //         <p className="cardText">{`${price} Dryers`}</p>
+            //         <p className="cardText">{`${dryPrices[price]}/5 Minutes`}</p >
+            //     </div>
+            // </div>
         )
     })
     

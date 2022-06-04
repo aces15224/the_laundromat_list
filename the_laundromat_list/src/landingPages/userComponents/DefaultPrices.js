@@ -6,10 +6,16 @@ const DefaultPrices = (props)=>{
 
     //Deliver indicates whether delivery is offered
     const [deliver, setDeliver] = useState(false);
+    const [windowMin, setWindowMin] = useState(false);
     const [categoryArray, setCategoryArray] = useState(["laundry", "dropOff", "delivery", "dryCleaning"])
 
+    //Button Labels determined by size of screen
+    let deliverKey = window.innerWidth <= 586 ? "Delivery" : "Delivery Service";
+    let dropOffKey = window.innerWidth <= 586 ? "Drop Off" : "Drop Off Service";
+    let laundryKey = window.innerWidth <= 586 ? "Laundry" : "Self-Service Laundry";
+
     useEffect(()=>{
-        console.log(props)
+        window.addEventListener("resize", resizeHandler);
         //Count tallies the number of Price Lists available
         let count = 0;
 
@@ -60,7 +66,14 @@ const DefaultPrices = (props)=>{
             priceCategory: _categories[0],
             buttons: btnBool   
         })
+
+        //function for removing event listener
+        return ()=>{ 
+            window.removeEventListener("resize", resizeHandler)
+        }
     },[props])
+    
+    
 
     //if the button boolean is set to true, call this function to display buttons
     const btnGenerator = ()=>{
@@ -69,7 +82,7 @@ const DefaultPrices = (props)=>{
         const _buttons = categoryArray.map((key, index)=>{
             if(key !== "deliver" && key !== "category"){
                 //Label based on "Service"
-                let label = key === "delivery" ? "Delivery Service" : key === "dropOff" ? "Drop Off Service" : key === "dryCleaning" ? "Dry Cleaning" : "Self-Service Laundry";
+                let label = key === "delivery" ? deliverKey : key === "dropOff" ? dropOffKey : key === "dryCleaning" ? "Dry Cleaning" : laundryKey;    
                 //if not null, return button  
                 if(tempProps[key]){
                     return(
@@ -79,6 +92,25 @@ const DefaultPrices = (props)=>{
             }  
         })
         return _buttons;   
+    }
+
+    //Event Handler (resizer)
+    const resizeHandler = ()=>{
+        if(window.innerWidth <= 586){
+            //if windowMin = false, btnGenerator will be called ONCE when screen size <=586
+            if(windowMin === false){
+                btnGenerator();
+            } 
+            //setWindowMin = true so btnGenerator will note continute to be called when screen size decreases
+            setWindowMin(true);               
+        } else{
+            //if windowMin = true, btnGenerator will be called ONCE when screen size >586
+            if(windowMin === true){
+                btnGenerator();
+            }
+            //setWindowMin = false so btnGenerator will note continute to be called when screen size increases
+            setWindowMin(false);
+        }
     }
 
     //Price Button Functionality

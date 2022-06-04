@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
+import Deleter from "./DashboardDeleter";
 
-const DashboardLaundry = ({laundry, name, update})=>{
+const DashboardLaundry = ({laundry, name, update, verify, claimed})=>{
     const liStyle = { display: "inline-block", marginBottom: 0, marginTop:10, width: "30%"} 
     const liStyle2 = { display: "inline-block", marginBottom: 0, marginTop:10, width: "45%" } 
     const [edit, setEdit] = useState(false);
@@ -311,6 +312,9 @@ const DashboardLaundry = ({laundry, name, update})=>{
     };
 
     const handleData = (obj)=>{
+        // if business isn't verified don't allow the user to edit
+        if(!verify || !claimed) return false; 
+        
         //priceObject includes washer prices already...
         const priceObject = obj.washer;
         //add dryer prices and...
@@ -319,7 +323,9 @@ const DashboardLaundry = ({laundry, name, update})=>{
         }
         // add pricing info then....
         priceObject.laundryAddInfo = overview;
+    
         
+
         //if priceLists exist, update data, then....
         if(priceList.available){
             fetch(`/api/laundry-prices/${name}`, {
@@ -419,7 +425,7 @@ const DashboardLaundry = ({laundry, name, update})=>{
                                     onChange={(e)=>priceConversion(e)}
                                 />
                                 <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button" onClick={()=>editPrices(undefined, "washer", "add")}>Add</button>
+                                    <button class="btn btn-primary dash_btn" type="button" onClick={()=>editPrices(undefined, "washer", "add")}>Add</button>
                                 </div>
                             </div>
                             <ul className="list-group">
@@ -456,7 +462,7 @@ const DashboardLaundry = ({laundry, name, update})=>{
                                 </div>
                                 <input id="perMinute" type="number" min="0" max="60" step="1" className="form-control" placeholder="Min"/>
                                 <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button" onClick={()=>editPrices(undefined, "dryer", "add")}>Add</button>
+                                    <button class="btn btn-primary dash_btn" type="button" onClick={()=>editPrices(undefined, "dryer", "add")}>Add</button>
                                 </div>
                             </div>
                             <ul className="list-group">
@@ -466,6 +472,18 @@ const DashboardLaundry = ({laundry, name, update})=>{
                     </div>
                 </div>
             </div>
+            {/* if no pricelists exist, don't display:  */}
+            {priceList.available && 
+                <>
+                    <div className="row">
+                        <div className="col-12 text-center">
+                            <h4>No longer offering this service?</h4>
+                        </div>
+                    </div>
+                    {/* component for deleting price list (pass in url) */}
+                    <Deleter url={`/api/laundry-prices/${name}`}/>
+                </>
+            }  
         </>        
     )
 }

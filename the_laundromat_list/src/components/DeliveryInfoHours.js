@@ -122,7 +122,10 @@ const DeliveryInfoHours = ({week, hours, updateHours, category, size})=>{
     }
 
     //Change input instruction based on size of window
-    const inputDay = (size >= 992 && size <= 1188) ? "Day" : "Select Day";
+    const inputDay = (size >= 992 && size <= 1188) || size <= 394 ? "Day" : "Select Day";
+    const start_time = size <= 394 ? "Start" : "Start Time";
+    const end_time = size <= 394 ? "End" : "End Time";
+
 
     return(
         <div className="row">
@@ -144,15 +147,15 @@ const DeliveryInfoHours = ({week, hours, updateHours, category, size})=>{
                                 <option>Sun</option>
                             </select>
                             <select id="open" className="form-control" onChange={(e)=>timeControl(e.target.value)}>
-                                <option selected disabled>Start Time</option>
+                                <option selected disabled>{start_time}</option>
                                 {startTimeOptions}
                             </select>
                             <select id="close" className="form-control" onChange={(e)=>setEnd(e.target.value)}>
-                                <option selected disabled>End Time</option>
+                                <option selected disabled>{end_time}</option>
                                 {finishTimeOptions}
                             </select>
                             <div className="input-group-append">
-                                <button className="btn btn-primary deliveryHoursBtn" onClick={(e)=> handleData(e, category, day, start, end, "add")}>Add</button>
+                                <button className="btn btn-primary deliveryHoursBtn dash_btn" onClick={(e)=> handleData(e, category, day, start, end, "add")}>Add</button>
                             </div>
                         </div>  
                         <ul className="list-group">

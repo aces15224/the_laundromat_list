@@ -3,11 +3,12 @@ import { Icon } from '@iconify/react';
 import Deleter from "./DashboardDeleter";
 
 
-const DashboardDryCleaning = ({dryClean, name, update})=>{
+const DashboardDryCleaning = ({dryClean, name, update, verify, claimed})=>{
     const [tableExists, setTableExists] = useState(false)
     const [edit, setEdit] = useState(false);
     const [edit2, setEdit2] = useState(false);
     const [edit3, setEdit3] = useState(false);
+    const [size, setSize] = useState();
     const [priceArray, setPriceArray] = useState([])
     const [addInfo, setAddInfo] = useState(null);
     const [addInfo2, setAddInfo2] = useState(null);
@@ -58,8 +59,20 @@ const DashboardDryCleaning = ({dryClean, name, update})=>{
     let message = document.getElementById("_priceMessage");
 
     useEffect(()=>{
+        window.addEventListener("resize", windowSize);
+        //set size to manage to control width of children components
+        setSize(window.innerWidth); 
+        //send prop to listMaker to create list of prices
         listMaker(dryClean);
+        return ()=>{
+            window.removeEventListener("resize", windowSize)
+        }
     }, [dryClean])
+
+    //sets state whenever window is resized
+    const windowSize = ()=>{
+        setSize(window.innerWidth)
+    }
 
     const listMaker = (object)=>{
         //send prop to listMaker to create list of prices
@@ -218,7 +231,7 @@ const DashboardDryCleaning = ({dryClean, name, update})=>{
         reset();
         if(action !== "remove"){
             // if values are valid....
-            if(category.value !== "Select Category" && item.value !== "" && price.value !== ""){
+            if((category.value !== "Select Category" || category.value !== "Category") && item.value !== "" && price.value !== ""){
                 //format price (EX. T-Shirt + 5.00 + Shirts)
                 const updatedPrice = `${item.value}+$${price.value}+${category.value}`;
                 //update indicates when to switch from updating dryCleaningPrices to updating other values in state...
@@ -291,13 +304,18 @@ const DashboardDryCleaning = ({dryClean, name, update})=>{
 
     //send data to database
     const postData = (obj)=>{
+    // if business isn't verified don't allow the user to edit
+    if(!verify || !claimed) return false;
         const dataObj = {};
         for(let i in obj){
             //filter out column number and add values to dataObj
             if(i !== "column"){
                 dataObj[i] = obj[i];
             }
-        }
+        }        
+        console.log(dataObj)
+
+
         //if table already exists, update, and then update dashboard to re-render
         if(tableExists){
             fetch(`/api/dry-cleaning-prices/${name}`, {
@@ -366,6 +384,11 @@ const DashboardDryCleaning = ({dryClean, name, update})=>{
         }        
     }
     
+    //Determines Input Place Holder Text based on size of screen
+    const sel_category = size <= 612 ? "Category" : "Select Category";
+    const sel_item = size <= 476 ? "Name" : "Insert Item";
+    const sel_price = size <= 476 ? "Price" : "Insert Price";
+
     return(
         <> 
             <div className="row price-div">
@@ -409,24 +432,24 @@ const DashboardDryCleaning = ({dryClean, name, update})=>{
                         </div>
                         <div className="card-body text-center" style={{padding: 0, backgroundColor: "white"}}> 
                             <div className="input-group laundryInput">
-                                <select className="form-control" id="selectCategory">
-                                    <option selected>Select Category</option>
+                                <select className="form-control summary_delivery" id="selectCategory">
+                                    <option selected>{sel_category}</option>
                                     <option value="Shirts">Shirts</option>
                                     <option value="Pants">Pants</option>
                                     <option value="Dress">Dress</option>
-                                    <option value="OuterWear">Outerwear</option>
+                                    <option value="Outerwear">Outerwear</option>
                                     <option value="Misc">Miscellaneous</option>
                                 </select>
                                 <div className="input-group-prepend">
                                     <span className="input-group-text">Item</span>
                                 </div>
-                                <input id="serviceItem" className="form-control" type="text" placeholder="Insert Item" style={{maxWidth: "22%"}} />
+                                <input id="serviceItem" className="form-control summary_delivery" type="text" placeholder={sel_item} style={{maxWidth: "22%"}} />
                                 <div className="input-group-prepend">
                                     <span className="input-group-text">$</span>
                                 </div>
-                                <input id="servicePrice"  type="number" min="0.00" max="100.00" step="0.01" className="form-control" placeholder="Insert Price" onChange={(e)=>priceConversion(e)}/>
+                                <input id="servicePrice"  type="number" min="0.00" max="100.00" step="0.01" className="form-control summary_delivery" placeholder={sel_price} onChange={(e)=>priceConversion(e)}/>
                                 <div className="input-group-append">
-                                    <button className="btn btn-primary form-control" type="button" onClick={(e)=>updatePrices(e)}>Add</button>
+                                    <button className="btn btn-primary form-control dash_btn" type="button" onClick={(e)=>updatePrices(e)}>Add</button>
                                 </div>
                             </div>  
                             <div className="row">

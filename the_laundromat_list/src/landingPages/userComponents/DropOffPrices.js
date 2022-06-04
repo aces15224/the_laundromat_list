@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import PriceCard from "../userComponents/PriceCard";
 
 const DropOffPrices = ({prices})=>{
     console.log(prices)
@@ -17,9 +18,9 @@ const DropOffPrices = ({prices})=>{
         const tempObject = {};
         const column1 = {};
         const column2 = {};
-        let minimum = "";
-        let generalInfo = "";
-        let directions = "";
+        let minimum;
+        let generalInfo;
+        let directions;
         let sameDay = false;
         let sameDayInfo;
         let perLb;
@@ -32,6 +33,7 @@ const DropOffPrices = ({prices})=>{
                 const label = prices[i].split(/-/);
                 tempObject[label[0]] = label[1]
             } else if(i.includes("Minimum")){
+                console.log(prices[i])
                 minimum = prices[i];
             } else if(i === "dropOffAddInfo"){
                 generalInfo = prices[i];
@@ -86,18 +88,21 @@ const DropOffPrices = ({prices})=>{
         }     
     
     },[prices])
+    console.log(info.minimum)
 
     //Function takes in an object (price category) and returns a price card for each item
     const priceColumn = (priceObj)=>{
         //cycle through key list and return a card w/ label and price
         return Object.keys(priceObj).map((price, index)=>{
             return(
-                <div className="card individual-price-card">
-                    <div className="card-body" style={{display:"flex", justifyContent:"space-between", alignItems:"center", padding:10}}>
-                        <p className="cardText">{price}</p>
-                        <p className="cardText">{priceObj[price]}</p >
-                    </div>
-                </div>
+                <PriceCard item={price} price={priceObj[price]}/>
+                
+                // <div className="card individual-price-card">
+                //     <div className="card-body" style={{display:"flex", justifyContent:"space-between", alignItems:"center", padding:10}}>
+                //         <p className="cardText">{price}</p>
+                //         <p className="cardText">{priceObj[price]}</p >
+                //     </div>
+                // </div>
             ) 
         })   
     }
@@ -134,7 +139,7 @@ const DropOffPrices = ({prices})=>{
             }
             <div className="row">
                 <div className="col-12 text-center">
-                    <h5>{(info.minimum !== "Enter Info") ? `Minimum Price for Drop Off Services: ${info.minimum}`: "No Minimum Price for Drop Off Services"}</h5>
+                    <h6>{info.minimum !== undefined ? `Minimum Price for Drop Off Services: ${info.minimum}`: "No Minimum Price for Drop Off Services"}</h6>
                 </div>
             </div>
             {info.perLb &&
@@ -155,23 +160,6 @@ const DropOffPrices = ({prices})=>{
                     <div className="col-12">{priceColumn(info.priceObj1)}</div>
                 </div> 
             }
-            
-            {/* {info.sameDay === true && 
-                <>
-                    <div className="row price-div">
-                        <div className="col-12 text-center">
-                            <h6>Same Day</h6>
-                        </div>                        
-                    </div>
-                    <div className="row">
-                        <div className="col-12 text-center">
-                            {info.sameDayInfo ? info.sameDayInfo : "We offer same day service!  Please call for details!"}
-                        </div>
-                    </div>
-                </>
-            } */}
-            
-
         </>
     )
 }

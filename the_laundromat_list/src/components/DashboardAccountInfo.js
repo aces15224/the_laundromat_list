@@ -10,6 +10,7 @@ const AccountInfo = ({businessName, setLink})=>{
     const listItemText = {fontSize: ".9rem"}
 
     useEffect(()=>{
+        window.scroll(0,0);
         // fetch business info upon loading
         userFetch()
     },[])

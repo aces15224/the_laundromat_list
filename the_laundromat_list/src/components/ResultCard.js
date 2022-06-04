@@ -20,7 +20,9 @@ function ResultCard(props){
     } = props.props;
 
     //Image to display if no other image is listed
-    const defaultImage = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Google_Photos_icon_%282020%29.svg/1200px-Google_Photos_icon_%282020%29.svg.png";  
+    const defaultImage = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Google_Photos_icon_%282020%29.svg/1200px-Google_Photos_icon_%282020%29.svg.png"; 
+    
+    const badgeStyle = cardStyle === 2 ? "badgeStyle" : "badgeStyle1";
 
     //create copy of options prop.  If null, set to empty array to reference length
     let optionCopy = options !== null ? options : [];;
@@ -35,8 +37,8 @@ function ResultCard(props){
 
     //Hours displays operating hours and determines which (Open or Closed) badge should be used 
     let hours = (open === true) ? 
-    <div className="badge badge-success badgeStyle">{props.hours === "Open 24 Hrs" ? "" : "Open till: "}{closing}</div> : 
-    <div className="badge badge-danger badgeStyle">{props.hours === "Open 24 Hrs" ? "" : "Opens at: "}{opening}</div>
+    <div className={`badge badge-success ${badgeStyle}`}>{props.hours === "Open 24 Hrs" ? "" : "Open till: "}{closing}</div> : 
+    <div className={`badge badge-danger ${badgeStyle}`}>{props.hours === "Open 24 Hrs" ? "" : "Opens at: "}{opening}</div>
 
     useEffect(()=>{
         setCardStyle(props.cardStyle);
@@ -71,23 +73,23 @@ function ResultCard(props){
 
     //Map options array and return a label along w/ a check mark for display
     let features = offerings.map((option, index)=>{
-        return <li className="listStyle" key={index}><i class="fa fa-check" aria-hidden="true" style={{color: "#27d627", marginRight: 5}}></i>
+        return <li className={cardStyle === 2 ? "listStyle" : "listStyle1"} key={index}><i class="fa fa-check" aria-hidden="true" style={{color: "#27d627", marginRight: 5}}></i>
         {option}</li> 
     })
 
     //Check traffic and return corresponding badge for display
     function checkBusyTimes (){
         if(traffic === "unknown"){
-            return (<div className="badge badge-secondary badgeStyle">Unknown Traffic</div>)
+            return (<div className={`badge badge-secondary ${badgeStyle}`}>Unknown Traffic</div>)
         } else{
             if(traffic < 35){
-                return (<div className="badge badge-secondary badgeStyle">Not Busy</div>)
+                return (<div className={`badge badge-secondary ${badgeStyle}`}>Not Busy</div>)
             } else if(traffic >= 35 && traffic < 60){
-                return (<div className="badge badge-info badgeStyle">Mildly Busy</div>)
+                return (<div className={`badge badge-info ${badgeStyle}`}>Mildly Busy</div>)
             } else if(traffic >= 60 && traffic < 85){
-                return (<div className="badge badge-warning badgeStyle">Busy</div>)
+                return (<div className={`badge badge-warning ${badgeStyle}`}>Busy</div>)
             } else{
-                return <div className="badge badge-danger badgeStyle">Very Busy</div>
+                return <div className={`badge badge-danger ${badgeStyle}`}>Very Busy</div>
             }    
         }
          
@@ -100,14 +102,14 @@ function ResultCard(props){
     return (
         <div className={cardStyle === 2 ? "card resultCard" : "card resultCard1"}>
             <div className="row">
-                <div id="col-img" className='col-4'>
+                <div id="col-img" className={cardStyle === 2 ? 'col-4' : "col-4 col-sm-5 col-md-4"}>
                     {/* if image is empty or null, return default image.  If it's a url or an image file, return image, otherwise display picture saved on file */}
                     <img src={(imageUrl === "" || imageUrl === null) ? defaultImage : webCheck === true ? imageUrl : filetypes === true ? process.env.PUBLIC_URL + `/uploads/resized/${imageUrl}` : imageUrl} 
                         className={cardStyle === 2 ? "searchPic" : "searchPic1"}
                         alt="Business Preview" 
                     />
                 </div>
-                <div id="col-title" className='col-8'>
+                <div id="col-title" className={cardStyle === 2 ? 'col-8' : "col-8 col-sm-7 col-md-8"}>
                     <div style={{display:"flex", justifyContent: "space-between"}}>
                         {/* card style determines styling.  if business name is greater than 25 characters, shorten it to fit */}
                         <div className={cardStyle === 2 ? "searchTitle" : "searchTitle1"}>{`${props.rank + 1}. ${(businessName.length > 25) ? businessName.slice(0, 24) + "..." : businessName}`}</div>
@@ -121,12 +123,12 @@ function ResultCard(props){
                         <div id="col-btn-list" className='col-5'>
                             {hours}
                             {busyTimes}
-                            <div className="badge badge-primary badgeStyle" onClick={btnHandler}>Click for Details</div>                                
+                            <div className={`badge badge-primary ${badgeStyle}`} onClick={btnHandler}>Click for Details</div>                                
                         </div>
                         <div className='col-7'>
                             {/* if there are no features, display "Wash Only", otherwise display Feature list */}
                             {(features.length === 0) ? 
-                                <li className="listStyle" key={businessName + 1}>
+                                <li className={cardStyle === 2 ? "listStyle" : "listStyle1"} key={businessName + 1}>
                                     <i class="fa fa-check" aria-hidden="true" style={{color: "#27d627", marginRight: 5}}></i>
                                     Wash Only
                                 </li>
