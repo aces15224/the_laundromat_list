@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/jsx-no-comment-textnodes */
 import React, { useState, useEffect, useContext } from "react";
-import {useHistory, Link} from "react-router-dom";
+import {useNavigate, Link} from "react-router-dom";
 import {AuthContext} from "../App";
 import moment from 'moment';
 
@@ -35,7 +35,7 @@ const Dashboard = ()=>{
         time: setTime(),
         day: setDay()
     })
-    const history = useHistory();
+    const history = useNavigate();
     const [toDos, setToDos] = useState([]);
     const {nameFunction} = useContext(AuthContext);
     const services = {marginLeft: "20px"};

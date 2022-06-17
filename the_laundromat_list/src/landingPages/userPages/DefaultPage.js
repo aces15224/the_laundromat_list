@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import DefaultNavBar from "../userComponents/defaultNavBar";
+import DefaultNavBar from "../userComponents/DefaultNavBar";
 import DefaultFooter from '../userComponents/DefaultFooter';
 import DefaultJumboTron from '../userComponents/DefaultJumbotron';
 import DefaultServices from '../userComponents/DefaultServices';

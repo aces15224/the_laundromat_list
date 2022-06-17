@@ -9,7 +9,7 @@ import _answerQuestions from "../images/answerQuestions.png";
 import _mobileAccount from "../images/mobilePhoneAcct.png";
 import _number1 from "../images/iconNumber1.png";
 import _number2 from "../images/iconNumber2.png";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/NavBar";
 import Footer from "../components/Footer";
 
 class BusinessPage extends Component{

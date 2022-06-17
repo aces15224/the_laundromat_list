@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
-import {useHistory} from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 import { Icon } from '@iconify/react';
-import Navbar from "../components/Navbar";
+import Navbar from "../components/NavBar";
 import Footer from "../components/Footer";
 
 const AboutPage = ()=>{
@@ -9,7 +9,7 @@ const AboutPage = ()=>{
         window.scroll(0,0)
     },[])
     const btnStyle = {width: "100%", borderRadius: 0};
-    const history = useHistory();
+    const history = useNavigate();
     const handleClick = (e, category)=>{
         if(category === "search"){
             history.push("/")

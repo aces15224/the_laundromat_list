@@ -2,7 +2,7 @@ import React from "react";
 import Search from "../images/laundrymat-2.jpg"
 import Compare from "../images/arcade.jpg";
 import Plan from "../images/planPic.png";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/NavBar";
 import Footer from "../components/Footer";
 import MockWebsite from "../images/landingPage.png"
 import "../css/home.css";

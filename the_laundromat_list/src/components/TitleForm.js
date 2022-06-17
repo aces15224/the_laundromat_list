@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import CheckBox from "./CheckBox";
 
 const TitleForm = ({handleClick})=>{
     const [permission, setPermission] = useState("");
-    const history = useHistory();
+    const history = useNavigate();
     const [features, setFeatures] = useState([
         {id: 1, value: "Yes", isChecked: false},
         {id: 2, value: "No", isChecked: false}

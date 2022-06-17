@@ -132,6 +132,35 @@ const DryCleaningPrices = ({prices, deliver})=>{
         }
     }
 
+    const priceList = (info, category)=>{
+        const items = info;
+        switch (category) {
+            case "outerwear":
+                outerTF = true;
+                break;
+            case "pants":
+                pantTF = true;
+                break;
+            case "shirts":
+                shirtTF = true;
+                break;
+            case "misc":
+                miscTF = true;
+                break;
+            case "dress":
+                dressTF = true;
+                break;
+        }
+        // create array of keys to map over....
+        return Object.keys(items).map((price, index)=>{
+            //return card w/ label and price
+            return(
+                <PriceCard item={price} price={items[price]}/>
+            )
+        });
+
+    }
+
     const outerwear = ()=>{
         const category = info.outerwear;
         //set outerTF to true to prevent outerwear from being called twice
@@ -140,14 +169,7 @@ const DryCleaningPrices = ({prices, deliver})=>{
         return Object.keys(category).map((price, index)=>{
             //return card w/ label and price
             return(
-                <>
-                    <div className="card individual-price-card">
-                        <div className="card-body" style={{display:"flex", justifyContent:"space-between", alignItems:"center", padding:10}}>
-                            <p className="cardText">{price}</p>
-                            <p className="cardText">{category[price]}</p >
-                        </div>
-                    </div>
-                </>
+                <PriceCard item={price} price={category[price]}/>
             )
         });    
     }
@@ -160,14 +182,7 @@ const DryCleaningPrices = ({prices, deliver})=>{
         return Object.keys(category).map((price, index)=>{
             //return card w/ label and price
             return(
-                <>
-                    <div className="card individual-price-card">
-                        <div className="card-body" style={{display:"flex", justifyContent:"space-between", alignItems:"center", padding:10}}>
-                            <p className="cardText">{price}</p>
-                            <p className="cardText">{category[price]}</p >
-                        </div>
-                    </div>
-                </>
+                <PriceCard item={price} price={category[price]}/>
             )
         });    
     } 
@@ -179,14 +194,7 @@ const DryCleaningPrices = ({prices, deliver})=>{
         return Object.keys(category).map((price, index)=>{
             //return card w/ label and price
             return(
-                <>
-                    <div className="card individual-price-card">
-                        <div className="card-body" style={{display:"flex", justifyContent:"space-between", alignItems:"center", padding:10}}>
-                            <p className="cardText">{price}</p>
-                            <p className="cardText">{category[price]}</p >
-                        </div>
-                    </div>
-                </>
+                <PriceCard item={price} price={category[price]}/>
             )
         });    
     } 
@@ -198,14 +206,7 @@ const DryCleaningPrices = ({prices, deliver})=>{
         return Object.keys(category).map((price, index)=>{
             //return card w/ label and price
             return(
-                <>
-                    <div className="card individual-price-card">
-                        <div className="card-body" style={{display:"flex", justifyContent:"space-between", alignItems:"center", padding:10}}>
-                            <p className="cardText">{price}</p>
-                            <p className="cardText">{category[price]}</p >
-                        </div>
-                    </div>
-                </>
+                <PriceCard item={price} price={category[price]}/>
             )
         });    
     }
@@ -217,14 +218,7 @@ const DryCleaningPrices = ({prices, deliver})=>{
         return Object.keys(category).map((price, index)=>{
             //return card w/ label and price
             return(
-                <>
-                    <div className="card individual-price-card">
-                        <div className="card-body" style={{display:"flex", justifyContent:"space-between", alignItems:"center", padding:10}}>
-                            <p className="cardText">{price}</p>
-                            <p className="cardText">{category[price]}</p >
-                        </div>
-                    </div>
-                </>
+                <PriceCard item={price} price={category[price]}/>
             )
         });    
     }
@@ -234,18 +228,18 @@ const DryCleaningPrices = ({prices, deliver})=>{
         // If [label]TF is false, it has not been displayed yet.  
         // After being displayed, [label]TF is set to true to prevent being displayed twice.
         if(categoryCount === 1){
-            //categoryCount =1 wil only display one category of prices
+            //categoryCount =1 will only display one category of prices
             let title = outerLength && outerTF === false ? "Outerwear" 
                 : shirtLength && shirtTF === false ? "Shirts" 
                 : pantLength && pantTF === false ? "Pants" 
                 : dressLength && dressTF === false ? "Dress Clothes" 
                 : miscLength && miscTF === false ? "Miscellaneous" 
                 : false; 
-            let body = outerLength && outerTF === false ? outerwear() 
-                : shirtLength && shirtTF === false ? shirts() 
-                :  pantLength && pantTF === false ? pants() 
-                : dressLength && dressTF === false ? dress() 
-                : miscLength && miscTF === false ? misc() 
+            let body = outerLength && outerTF === false ? priceList(info.outerwear, "outerwear")
+                : shirtLength && shirtTF === false ? priceList(info.shirts, "shirts")
+                :  pantLength && pantTF === false ? priceList(info.pants, "pants")
+                : dressLength && dressTF === false ? priceList(info.dress, "dress")
+                : miscLength && miscTF === false ? priceList(info.misc, "misc")
                 : false;
                 //return one card
             return (
@@ -266,11 +260,11 @@ const DryCleaningPrices = ({prices, deliver})=>{
                 : dressLength && dressTF === false ? "Dress Clothes" 
                 : miscLength && miscTF === false ? "Miscellaneous" 
                 : false; 
-                let body = outerLength && outerTF === false ? outerwear() 
-                : shirtLength && shirtTF === false ? shirts() 
-                :  pantLength && pantTF === false ? pants() 
-                : dressLength && dressTF === false ? dress() 
-                : miscLength && miscTF === false ? misc() 
+                let body = outerLength && outerTF === false ? priceList(info.outerwear, "outerwear")
+                : shirtLength && shirtTF === false ? priceList(info.shirts, "shirts")
+                :  pantLength && pantTF === false ? priceList(info.pants, "pants")
+                : dressLength && dressTF === false ? priceList(info.dress, "dress")
+                : miscLength && miscTF === false ? priceList(info.misc, "misc")
                 : false;
                 
                 if(i % 2 !== 1){

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {useHistory} from "react-router-dom";
-import Navbar from "../components/Navbar";
+import {useNavigate} from "react-router-dom";
+import Navbar from "../components/NavBar";
 import Footer from "../components/Footer";
 import FormOwner from "../components/FormOwner";
 import BusinessFinder from "../components/BusinessFinder";
@@ -17,7 +17,7 @@ const SignUp = ()=>{
     const [userPassword, setUserPassword] = useState("");
     const [newAccount, setNewAccount] = useState(false);
     const [loading, setLoading] = useState(false);
-    const history = useHistory();
+    const history = useNavigate();
     const {login, businessName} = useContext(AuthContext);
 
     useEffect(()=>{

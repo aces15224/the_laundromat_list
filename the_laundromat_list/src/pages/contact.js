@@ -1,7 +1,7 @@
 import { useState, useEffect} from 'react';
 import { Icon } from '@iconify/react';
 import { send } from 'emailjs-com';
-import Navbar from "../components/Navbar";
+import Navbar from "../components/NavBar";
 import Footer from "../components/Footer";
 const Contact = ()=>{
     useEffect(()=>{
